@@ -1,0 +1,53 @@
+name: "CI - Two-ships"
+
+on:
+  push:
+    branches: ["**"]
+    paths: 
+      - "games/Two_Ships_Passing_In_The_Night/**"
+  pull_request:
+    branches: ["**"]
+    paths: 
+      - "games/Two_Ships_Passing_In_The_Night/**"
+  workflow_dispatch:
+
+jobs:
+  build-lint-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: games/Two_Ships_Passing_In_The_Night
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@${github.sha}
+
+      - name: Setup Node
+        uses: actions/setup-node@${github.sha}
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Audit Dependencies
+        run: npm audit --audit-level=critical || true
+
+      - name: Linter
+        run: npx eslint src/**/*.js
+
+      - name: Run Unit Tests
+        run: npm test
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Final Status
+        if: success()
+        run: echo "Build, lint and tests successful for Two Ships Passing In The Night"
+      
+      - name: Failed Status
+        if: failure()
+        run: echo "Build, lint or tests failed for Two Ships Passing In The Night"
