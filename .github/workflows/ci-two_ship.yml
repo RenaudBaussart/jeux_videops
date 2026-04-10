@@ -20,10 +20,10 @@ jobs:
     
     steps:
       - name: Checkout Code
-        uses: actions/checkout@${github.sha}
+        uses: actions/checkout@${{ github.sha }}
 
       - name: Setup Node
-        uses: actions/setup-node@${github.sha}
+        uses: actions/setup-node@${{ github.sha }}
         with:
           node-version: 18
           cache: 'npm'
