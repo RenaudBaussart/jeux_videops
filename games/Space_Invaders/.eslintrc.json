@@ -1,0 +1,34 @@
+// ce fichier est la configuration du ESLint
+// le linter est un "correcteur", il permet davoir la même norme d'écriture
+
+
+// hérite de toutes les règles de google
+{
+  "extends": ["google"],
+  // env : ENVIRONEMENT D EXECUTION 
+  "env": {
+    // permet que lint prenne en compte les objets du navigateur : window, document
+    "browser": true,
+    // permet que lint prenne en compte les fonctionnalités de JS
+    "es2021": true,
+    // permet que le lint prenne en compte les var de nodes.js : require et process
+    "node": true
+  },
+  // PARSER
+  "parserOptions": {
+    // correspond au ES2021 soit js 
+    "ecmaVersion": 12,
+    // permet d'utiliser import et export
+    "sourceType": "module"
+  },
+  // MODIFICATIONS DES REGLES (contourner google rules)
+  "rules": {
+    // retire l'obligation de grand commentaire avant fonction
+    "require-jsdoc": "off",
+    "valid-jsdoc": "off",
+    // retire les erreurs de retour à la ligne
+    "linebreak-style": 0,
+    // retire la limite de 80 chars dans lhistorique
+    "max-len": ["error", { "code": 180 }]
+  }
+}
