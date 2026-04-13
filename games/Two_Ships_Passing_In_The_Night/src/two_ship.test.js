@@ -15,3 +15,24 @@ describe('Tests Unitaires - Annexe Epitech', () => {
     expect(Math.abs(result)).toBeLessThanOrEqual(1);
   });
 });
+describe('Tests Unitaires - 5 test personnalises', () => {
+  // list des tests unitaire personnalise
+  it('doit valider la fonction lerp : lerp(0, 10, 0.5) === 5', () => {
+    expect(lerp(0, 10, 0.5)).toBe(5);
+  });
+  it('doit valider la fonction mapLinear : mapLinear(5, 0, 10, 0, 100) === 50', () => {
+    expect(mapLinear(5, 0, 10, 0, 100)).toBe(50);
+  });
+  it('doit valider la fonction randFloatSpread : résultat <= 0.5', () => {
+    const result = randFloatSpread(1);
+    expect(Math.abs(result)).toBeLessThanOrEqual(0.5);
+  });
+  it('doit valider la fonction randFloatSpread : résultat >= -0.5', () => {
+    const result = randFloatSpread(1);
+    expect(Math.abs(result)).toBeGreaterThanOrEqual(-0.5);
+  });
+  it('doit valider la fonction lerp : lerp(10, 20, 0.25) === 12.5', () => {
+    expect(lerp(10, 20, 0.25)).toBe(12.5);
+  });
+});
+  
