@@ -3,12 +3,12 @@ name: "CI - Two-ships"
 on:
   push:
     branches: ["**"]
-    paths: 
-      - "games/Two_Ships_Passing_In_The_Night/**"
+    # paths: 
+    #  - "games/Two_Ships_Passing_In_The_Night/**"
   pull_request:
     branches: ["**"]
-    paths: 
-      - "games/Two_Ships_Passing_In_The_Night/**"
+    # paths: 
+    #  - "games/Two_Ships_Passing_In_The_Night/**"
   workflow_dispatch:
 
 jobs:
@@ -51,3 +51,14 @@ jobs:
       - name: Failed Status
         if: failure()
         run: echo "Build, lint or tests failed for Two Ships Passing In The Night"
+
+jobs:
+  build-lint-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: games/Two_Ships_Passing_In_The_Night
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
