@@ -25,7 +25,7 @@ jobs:
           node-version: 20
           cache: 'npm'
           cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
-      - run: npm install
+      - run: npm install --no-audit --no-fund --loglevel error
 
   audit:
     needs: install
@@ -37,7 +37,9 @@ jobs:
           node-version: 20
           cache: 'npm'
           cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
-      - run: npm audit --audit-level=critical || true
+      - run: |
+          echo "### 🛡️ Rapport de Sécurité" >> $GITHUB_STEP_SUMMARY
+          npm audit --audit-level=critical || echo "Des failles critiques ont été trouvées" >> $GITHUB_STEP_SUMMARY
 
   lint:
     needs: install
@@ -50,7 +52,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
       - run: npm install
-      - run: npx eslint src/**/*.js
+      - run: npm run lint
 
   test:
     needs: install
