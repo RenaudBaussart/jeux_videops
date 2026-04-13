@@ -86,6 +86,9 @@ jobs:
   functional-test:
     needs: build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: games/Two_Ships_Passing_In_The_Night
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -93,22 +96,16 @@ jobs:
           node-version: 20
           cache: 'npm'
           cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
-      
+
       - name: Install dependencies
         run: npm install
+
+      - name: Build game
+        # On re-build ici pour être sûr que le dossier /dist existe pour le serveur
+        run: npm run build
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 
       - name: Run Functional Tests
-        # On lance le test sur le fichier spécifique avec le reporter GitHub
         run: npx playwright test ./src/tests/test_func.test.js --reporter=github
-
-      - name: Upload Test Results
-        # Cette étape ne se lance que si un test échoue
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: games/Two_Ships_Passing_In_The_Night/playwright-report/
-          retention-days: 7 // keeping evidence for a week
