@@ -1,6 +1,6 @@
 // utilisation de vitest pour les tests unitaires
-import { describe, it, expect } from 'vitest';
-import { lerp, mapLinear, randFloatSpread } from '../math.js'; 
+import {describe, it, expect} from 'vitest';
+import {lerp, mapLinear, randFloatSpread} from '../math.js';
 
 describe('Tests Unitaires - Annexe Epitech', () => {
   // list des tests unitaire imposer par le sujet
@@ -35,4 +35,3 @@ describe('Tests Unitaires - 5 test personnalises', () => {
     expect(lerp(10, 20, 0.25)).toBe(12.5);
   });
 });
-  

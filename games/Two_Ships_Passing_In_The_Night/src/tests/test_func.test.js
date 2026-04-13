@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test';
+import {test, expect} from '@playwright/test';
 
-test('Le jeu doit se charger correctement', async ({ page }) => {
+test('Le jeu doit se charger correctement', async ({page}) => {
   // goto la page
   await page.goto('http://localhost:5173');
 
