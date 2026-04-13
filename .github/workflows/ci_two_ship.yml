@@ -11,54 +11,70 @@ on:
     #  - "games/Two_Ships_Passing_In_The_Night/**"
   workflow_dispatch:
 
-jobs:
-  build-lint-test:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: games/Two_Ships_Passing_In_The_Night
-    
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+defaults:
+  run:
+    working-directory: games/Two_Ships_Passing_In_The_Night
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
           cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
+      - run: npm install
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Audit Dependencies
-        run: npm audit --audit-level=critical || true
-
-      - name: Linter
-        run: npx eslint src/**/*.js
-
-      - name: Run Unit Tests
-        run: npm test
-
-      - name: Build Project
-        run: npm run build
-
-      - name: Final Status
-        if: success()
-        run: echo "Build, lint and tests successful for Two Ships Passing In The Night"
-      
-      - name: Failed Status
-        if: failure()
-        run: echo "Build, lint or tests failed for Two Ships Passing In The Night"
-
-jobs:
-  build-lint-test:
+  audit:
+    needs: install
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: games/Two_Ships_Passing_In_The_Night
-    
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
+      - run: npm audit --audit-level=critical || true
+
+  lint:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
+      - run: npm install
+      - run: npx eslint src/**/*.js
+
+  test:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
+      - run: npm install
+      - run: npm test
+
+  
+  build:
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
+      - run: npm install
+      - run: npm run build
