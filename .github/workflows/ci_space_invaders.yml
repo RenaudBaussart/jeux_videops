@@ -6,12 +6,12 @@ name: "CI - Space Invaders"
 on:
   push:
     branches: ["**"]
-    paths:
-      - "games/Space_Invaders/**"
+    # paths:
+    #   - "games/Space_Invaders/**"
   pull_request:
       branches: ["**"]
-      paths:
-        - "games/Space_Invaders/**"
+      # paths:
+      #   - "games/Space_Invaders/**"
   # permet de lancer lusine sans push
   workflow_dispatch:
 
