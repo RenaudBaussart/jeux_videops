@@ -68,7 +68,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
       - run: npm install
-      - run: npm test
+      - run: npm run unit-test
   
   build:
     needs: [lint, unitary-test]

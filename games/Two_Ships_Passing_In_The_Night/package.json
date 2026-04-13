@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "test": "vitest run --reporter=default --reporter=github-actions",
+    "unit-test": "vitest run ./src/tests/two_ship.test.js --reporter=default --reporter=github-actions",
     "lint": "eslint src/**/*.js"
   },
   "repository": {
