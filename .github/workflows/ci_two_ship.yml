@@ -57,7 +57,7 @@ jobs:
       - run: npm install
       - run: npm run lint
 
-  test:
+  unitary-test:
     needs: install
     runs-on: ubuntu-latest
     steps:
@@ -69,10 +69,9 @@ jobs:
           cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
       - run: npm install
       - run: npm test
-
   
   build:
-    needs: [lint, test]
+    needs: [lint, unitary-test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -83,3 +82,21 @@ jobs:
           cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
       - run: npm install
       - run: npm run build
+
+  functional-test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      
+      # installe les navigateurs pour Playwright (Chrome/Firefox)
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      # lance le serveur de dev ET on lance les tests en même temps
+      - name: Run Functional Tests
+        run: npx playwright test

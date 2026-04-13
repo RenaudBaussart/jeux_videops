@@ -1,6 +1,6 @@
 // utilisation de vitest pour les tests unitaires
 import { describe, it, expect } from 'vitest';
-import { lerp, mapLinear, randFloatSpread } from './math.js'; 
+import { lerp, mapLinear, randFloatSpread } from '../math.js'; 
 
 describe('Tests Unitaires - Annexe Epitech', () => {
   // list des tests unitaire imposer par le sujet

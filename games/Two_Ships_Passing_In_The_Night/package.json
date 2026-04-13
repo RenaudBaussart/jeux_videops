@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/razh/js13k-2021#readme",
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "del": "6.0.0",
     "escape-string-regexp": "5.0.0",
     "eslint": "7.32.0",
