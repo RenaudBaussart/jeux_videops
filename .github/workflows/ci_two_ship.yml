@@ -99,4 +99,4 @@ jobs:
 
       # lance le serveur de dev ET on lance les tests en même temps
       - name: Run Functional Tests
-        run: npx playwright test
+        run: npx playwright test ./src/tests/test_func.test.js --reporter=github-actions
