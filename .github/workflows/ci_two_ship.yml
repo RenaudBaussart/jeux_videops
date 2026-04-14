@@ -41,7 +41,7 @@ jobs:
         run: |
           echo "### 🛡️ Rapport de Sécurité" >> $GITHUB_STEP_SUMMARY
           echo "Analyse effectuée avec succès." >> $GITHUB_STEP_SUMMARY
-          # On vérifie si npm audit est vide et on ajoute un message rassurant
+          # Vérifie si npm audit est vide et echo un message de validation
           npm audit --audit-level=critical || echo "✅ Aucune faille critique détectée." >> $GITHUB_STEP_SUMMARY
 
   lint:
@@ -101,7 +101,7 @@ jobs:
         run: npm install
 
       - name: Build game
-        # On re-build ici pour être sûr que le dossier /dist existe pour le serveur
+        # re-build pour sassurer que le dossier /dist existe pour le serveur
         run: npm run build
 
       - name: Install Playwright Browsers
