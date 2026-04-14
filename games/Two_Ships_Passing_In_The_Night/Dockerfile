@@ -27,5 +27,5 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # expose le port 80 (le port standard du web)
 EXPOSE 80
 
-# lance Nginx en arrière-plan 
+# lance Nginx en arrière-plan   
 CMD ["nginx", "-g", "daemon off;"]
