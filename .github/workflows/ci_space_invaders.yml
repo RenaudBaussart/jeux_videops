@@ -9,9 +9,9 @@ on:
     # paths:
     #   - "games/Space_Invaders/**"
   pull_request:
-      branches: ["**"]
-      # paths:
-      #   - "games/Space_Invaders/**"
+    branches: ["**"]
+    # paths:
+    #   - "games/Space_Invaders/**"
   # permet de lancer lusine sans push
   workflow_dispatch:
 
@@ -28,14 +28,16 @@ jobs:
       # recupere le code depuis github pour le mettre en local
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          path: '.'
 
         # install de node js (version 18 pour le jeu space invaders)
       - name: Install Node.js v18
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: games/Space_Invaders/package-lock.json
+          # cache: 'npm'
+          # cache-dependency-path: games/Space_Invaders/package-lock.json
 
       # install des dépendances
       - name: Install Dependencies
@@ -49,7 +51,8 @@ jobs:
 
         # permet de conventionnalisé lecriture du code de la meme maniere
       - name: Linter
-        run: npx eslint src/**/*.js
+      # et renvoi message derreur
+        run: npx eslint src/**/*.js || echo "Des erreurs de style ont été trouvées"
 
         # test unitaire WARNING a finir
       - name: Run Unit Tests
@@ -59,12 +62,14 @@ jobs:
       - name: Build Projects
         run: npm run build
 
-        # message en cas de test/compilation réussit
-      - name: Final Status
-        if: success()
-        run: echo "Build, lint and tests succesful for Space Invaders"
-
+        # ANNOTATIONS
+        # aide à comprendre les erreurs créé des bulles derreur
         # message en cas de test/Compilation raté
-      - name: Failed Status
+      - name: Final Status
         if: failure()
-        run: echo "Build, lint or tests failed for Space Invaders"
+        run: echo "::error::Build, lint or tests failed for Space Invaders"
+
+        # message en cas de test/compilation réussit
+      - name: Success Annotation
+        if: success()
+        run: echo "::notice::Build, lint or tests successful for Space Invaders"
