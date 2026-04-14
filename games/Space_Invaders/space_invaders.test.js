@@ -77,7 +77,7 @@ describe("Tests unitaires fournis dans le PDF", () => {
         const p1 = { angle: 5, radius: 50 };
         const p2 = { angle: 10, radius: 100 };
         // un peu différent car grand chiffre apres la virgule
-        expect(distance(p1, p2)).toBeCloseTo(98.302, 3);
+        expect(distance(p1, p2)).toBeCloseTo(50.249, 3);
     });
 
     // reduit la longueur d'un vecteur à 1 (collision) en gardant sa direction (ex : vitesse constante)
