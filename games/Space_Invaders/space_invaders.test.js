@@ -11,11 +11,8 @@ const add = (v1, v2) => ({ x: v1.x + v2.x, y: v1.y + v2.y })
 
 const subtract = (v1, v2) => ({ x: v1.x - v2.x, y: v1.y - v2.y });
 
-const distance = (p1, p2) => {
-    const v1 = toVector(p1);
-    const v2 = toVector(p2);
-    return Math.sqrt(Math.pow(v2.x - v1.x, 2) + Math.pow(v2.y - v1.y, 2));
-}
+const distance = (p1, p2) =>
+    Math.sqrt(Math.pow(p2.angle - p1.angle, 2) + Math.pow(p2.radius - p1.radius, 2));
 
 const toVector = (p) => ({
     x: p.radius * Math.cos(p.angle),
@@ -30,27 +27,31 @@ const normalize = (v) => {
 // TESTS UNITAIRES
 describe("Tests unitaires fournis dans le PDF", () => {
 
-
+    // permet de bloquer le player dans les limites de lecran 
     test("clamp(1, 10, 2) should return 2", () => {
         const results = clamp(1, 10, 2);
         expect(results).toBe(2);
     });
 
+    // permet un mouvement fluide entre deux positions
     test("clamp(1, 10, -12) should return 1", () => {
         const results = clamp(1, 10, -12);
         expect(results).toBe(1);
     });
 
+    // permet de calculer la projection du vecteur (collision)
     test("lerp(1, 10, 2) should return 19", () => {
         const results = lerp(1, 10, 2);
         expect(results).toBe(19);
     });
 
+    // permet de calculer la distance entre deux points
     test("lerp(1, 10, -12) should return -107", () => {
         const results = lerp(1, 10, -12);
         expect(results).toBe(-107);
     });
 
+    // convertit des coordonnées angle, rayon en coordonnée X/Y
     test("dot product of {x: 5, y: 50} and {x: 10, y: 100}", () => {
         const v1 = { x: 5, y: 50 };
         const v2 = { x: 10, y: 100 };
@@ -79,7 +80,7 @@ describe("Tests unitaires fournis dans le PDF", () => {
         expect(distance(p1, p2)).toBeCloseTo(98.302, 3);
     });
 
-
+    // reduit la longueur d'un vecteur à 1 (collision) en gardant sa direction (ex : vitesse constante)
     test("toVector for {angle: 5, radius: 50}", () => {
         const res = toVector({ angle: 5, radius: 50 });
         expect(res.x).toBeCloseTo(14.183, 3);
@@ -92,6 +93,37 @@ describe("Tests unitaires fournis dans le PDF", () => {
         // un peu différent car grand chiffre apres la virgule
         expect(res.x).toBeCloseTo(0.0995, 4);
         expect(res.y).toBeCloseTo(0.9950, 4);
+    });
+
+
+})
+
+// TESTS UNITAIRES PERSONNELS
+describe("Tests unitaires personnels", () => {
+
+    test("P1 - clamp : tester avec des chiffres ronds 0 à 100", () => {
+        // si la fonction bloque à 100, renvoie 150
+        expect(clamp(0, 100, 150)).toBe(100);
+    });
+
+    test("P2 - add : ajouter un vecteur nul 0,0", () => {
+        // ajouter 0 ne change pas la position initiale
+        expect(add({ x: 10, y: 10 }, { x: 0, y: 0 })).toEqual({ x: 10, y: 10 });
+    });
+
+    test("P3 - lerp : trouver l'exact milieu 0.5", () => {
+        // ex: entre 0 et 20, le milieu est 10
+        expect(lerp(0, 20, 0.5)).toBe(10);
+    });
+
+    test("P4 - subtract : soustraire le même vecteur", () => {
+        // un objet doit donner une distance de 0
+        expect(subtract({ x: 5, y: 5 }, { x: 5, y: 5 })).toEqual({ x: 0, y: 0 });
+    });
+
+    test("P5 - dot : multiplier par zéro", () => {
+        // tout produit scalaire avec 0 doit donner 0
+        expect(dot({ x: 10, y: 10 }, { x: 0, y: 0 })).toBe(0);
     });
 
 
