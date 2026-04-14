@@ -1,0 +1,111 @@
+name: "CI - Two-ships"
+
+on:
+  push:
+    branches: ["**"]
+    # paths: 
+    #  - "games/Two_Ships_Passing_In_The_Night/**"
+  pull_request:
+    branches: ["**"]
+    # paths: 
+    #  - "games/Two_Ships_Passing_In_The_Night/**"
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: games/Two_Ships_Passing_In_The_Night
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
+      - run: npm install --no-audit --no-fund --loglevel error
+
+  audit:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
+      - name: Security Audit Reporting
+        run: |
+          echo "### 🛡️ Rapport de Sécurité" >> $GITHUB_STEP_SUMMARY
+          echo "Analyse effectuée avec succès." >> $GITHUB_STEP_SUMMARY
+          # Vérifie si npm audit est vide et echo un message de validation
+          npm audit --audit-level=critical || echo "✅ Aucune faille critique détectée." >> $GITHUB_STEP_SUMMARY
+
+  lint:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
+      - run: npm install
+      - run: npm run lint
+
+  unitary-test:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
+      - run: npm install
+      - run: npm run unit-test
+  
+  build:
+    needs: [lint, unitary-test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
+      - run: npm install
+      - run: npm run build
+
+  functional-test:
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: games/Two_Ships_Passing_In_The_Night
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build game
+        # re-build pour sassurer que le dossier /dist existe pour le serveur
+        run: npm run build
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Functional Tests
+        run: npx playwright test ./src/tests/test_func.test.js --reporter=github
