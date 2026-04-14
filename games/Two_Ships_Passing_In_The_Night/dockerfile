@@ -1,23 +1,31 @@
-# build
-# utilisation d'une image node alpine pour construire l'application
-FROM node:18-alpine AS build
-# définition du répertoire de travail dans le conteneur
+# Étape 1 : Construction (Builder)
+# utilise une image Node.js légère (alpine)
+FROM node:20-alpine AS builder
+
+# définit le dossier de travail dans le conteneur
 WORKDIR /app
-# copie des fichiers de configuration et d'installation des dépendances
+
+# copie d'abord les fichiers de dépendances pour optimiser le cache Docker
 COPY package*.json ./
-# installation des dépendances nécessaires pour le build
+
+# installe les dépendances
 RUN npm install
-# copie du code source de l'application dans le conteneur
+
+# copie le reste du code source
 COPY . .
-# lance la commande de build
+
+# compile le jeu (cela va créer le dossier /dist)
 RUN npm run build
 
-# serveur de production
-# utilisation de nginx pour servir les fichiers statiques générés par le build
-FROM nginx:stable-alpine AS production
-# copie des fichiers de build dans le dossier de nginx
-COPY --from=build /app/dist /usr/share/nginx/html
-# expose le port 80 pour le trafic HTTP
+# Étape 2 : Production (Serveur Web)
+# utilise Nginx, un serveur web ultra léger et performant
+FROM nginx:alpine
+
+# copie les fichiers compilés depuis l'étape 1 (builder) vers le dossier public de Nginx
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# expose le port 80 (le port standard du web)
 EXPOSE 80
-# commande pour démarrer nginx en mode premier plan
+
+# lance Nginx en arrière-plan 
 CMD ["nginx", "-g", "daemon off;"]

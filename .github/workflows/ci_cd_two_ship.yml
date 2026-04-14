@@ -1,4 +1,4 @@
-name: "CI - Two-ships"
+name: "CI/CD - Two-ships"
 
 on:
   push:
@@ -109,3 +109,12 @@ jobs:
 
       - name: Run Functional Tests
         run: npx playwright test ./src/tests/test_func.test.js --reporter=github
+  deploy:
+    needs: functional-test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - name: Trigger Render Deployment
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
