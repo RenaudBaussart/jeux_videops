@@ -151,6 +151,15 @@ jobs:
         run: npm run build
         working-directory: ${{ env.WORKING_DIR }}
 
+
+        # BONUS
+        # Création d'artefact lors de rapport d'erreur
+      - name: "Upload Game Artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: space-invaders-build
+          path: games/Space_Invaders/build
+
         # ANNOTATIONS
         # aide à comprendre les erreurs créé des bulles derreur
         # message en cas de test/Compilation raté
