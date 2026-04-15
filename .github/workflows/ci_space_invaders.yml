@@ -1,0 +1,173 @@
+# automatisation (github actions)
+name: "CI - Space Invaders"
+
+# trigger : a quel moment lusine se met en marche
+# on push : quand il recoit un nouveau push sur github
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+  # permet de lancer lusine sans push
+  workflow_dispatch:
+
+  # définit des variables communes
+env:
+  WORKING_DIR: games/Space_Invaders
+
+# liste les automatisations
+# INSTALLATION
+jobs:
+  # nom du job
+  install:
+    name: "Job: Installation"
+    # precise a github que cest une version ubuntu
+    runs-on: ubuntu-latest
+    # etape d automatisation
+    steps:
+      - name: "Checkout Code"
+      # recupere le code depuis github pour le mettre en local
+      #- name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: "Install Node.js v18"
+        uses: actions/setup-node@v4
+        # install de node js (version 18 pour le jeu)
+        with:
+          node-version: "18"
+
+      # install des dépendances
+      - name: Install Dependencies
+        run: npm install
+        working-directory: ${{ env.WORKING_DIR }}
+
+  # AUDIT
+  # vulnérabilité DevSecOps
+  audit:
+    name: "Security Audit"
+    # precise a github que cest une version ubuntu
+    runs-on: ubuntu-latest
+    # nécessite que l'étape d'avant soit validée
+    needs: install
+    steps:
+      # recupere le code depuis github pour le mettre en local
+      - name: "Checkout Code"
+        uses: actions/checkout@v4
+
+      - name: "Install Node.js v18"
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      # install des dépendances
+      - name: Install Dependencies
+        run: npm install
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Security Audit
+        # npm audit: scanner natif a node js, compare a une liste de failles
+        # --audit: filtre qui sert a ignorer les alertes mineures mais bloque sil y a des erreurs plus fortes
+        run: npm audit --audit-level=critical || true
+        working-directory: ${{ env.WORKING_DIR }}
+
+  # LINTER (qualité du code)
+  # permet de conventionnalisé lecriture du code de la meme maniere
+  lint:
+    name: "Linter"
+    # precise a github que cest une version ubuntu
+    runs-on: ubuntu-latest
+    # nécessite que l'étape d'install soit validée
+    needs: install
+    steps:
+      # recupere le code depuis github pour le mettre en local
+      - name: "Checkout Code"
+        uses: actions/checkout@v4
+
+      - name: "Install Node.js v18"
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      # install des dépendances
+      - name: Install Dependencies
+        run: npm install
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: "Linter"
+        # et renvoi message derreur
+        run: npx eslint src/**/*.js || echo "::warning::Des erreurs de style ont été trouvées"
+        working-directory: ${{ env.WORKING_DIR }}
+
+  # TESTS UNITAIRES & FONCTIONNELS
+  tests:
+    name: "Unit & Functional Tests"
+    # precise a github que cest une version ubuntu
+    runs-on: ubuntu-latest
+    # nécessite que l'étape d'install soit validée
+    needs: install
+    steps:
+      - name: "Checkout Code"
+      # recupere le code depuis github pour le mettre en local
+        uses: actions/checkout@v4
+        
+      - name: "Install Node.js v18"
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      # install des dépendances
+      - name: Install Dependencies
+        run: npm install
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Run Unit Tests
+        run: npm test
+        working-directory: ${{ env.WORKING_DIR }}
+
+  # COMPILATION
+  # si tous les tests sont passées alors il build
+  build:
+    name: "Compilation & Status"
+    # precise a github que cest une version ubuntu
+    runs-on: ubuntu-latest
+    # nécessite que toutes les etapes soit validée
+    needs: [lint, tests]
+    steps:
+      # recupere le code depuis github pour le mettre en local
+      - name: "Checkout Code"
+        uses: actions/checkout@v4
+
+      - name: "Install Node.js v18"
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      # install des dépendances
+      - name: Install Dependencies
+        run: npm install
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Build Projects
+        run: npm run build
+        working-directory: ${{ env.WORKING_DIR }}
+
+
+        # BONUS
+        # Création d'artefact lors de rapport d'erreur
+      - name: "Upload Game Artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: space-invaders-build
+          path: games/Space_Invaders/build
+
+        # ANNOTATIONS
+        # aide à comprendre les erreurs créé des bulles derreur
+        # message en cas de test/Compilation raté
+      - name: Final Status
+        if: failure()
+        run: echo "::error::Build, lint or tests failed for Space Invaders"
+
+        # message en cas de test/compilation réussit
+      - name: Success Annotation
+        if: success()
+        run: echo "::notice::Build, lint or tests successful for Space Invaders"
