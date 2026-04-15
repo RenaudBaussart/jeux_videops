@@ -11,8 +11,13 @@ const add = (v1, v2) => ({ x: v1.x + v2.x, y: v1.y + v2.y })
 
 const subtract = (v1, v2) => ({ x: v1.x - v2.x, y: v1.y - v2.y });
 
-const distance = (p1, p2) =>
-    Math.sqrt(Math.pow(p2.angle - p1.angle, 2) + Math.pow(p2.radius - p1.radius, 2));
+const distance = (p1, p2) => {
+    // convertit les coordonnées polaires en vecteurs (collision)
+    const v1 = toVector(p1);
+    const v2 = toVector(p2);
+    // calcule la distance entre les deux vecteurs
+    return Math.sqrt(Math.pow(v2.x - v1.x, 2) + Math.pow(v2.y - v1.y, 2));
+};
 
 const toVector = (p) => ({
     x: p.radius * Math.cos(p.angle),
@@ -77,7 +82,7 @@ describe("Tests unitaires fournis dans le PDF", () => {
         const p1 = { angle: 5, radius: 50 };
         const p2 = { angle: 10, radius: 100 };
         // un peu différent car grand chiffre apres la virgule
-        expect(distance(p1, p2)).toBeCloseTo(50.249, 3);
+        expect(distance(p1, p2)).toBeCloseTo(98.30248290540649, 3);
     });
 
     // reduit la longueur d'un vecteur à 1 (collision) en gardant sa direction (ex : vitesse constante)
