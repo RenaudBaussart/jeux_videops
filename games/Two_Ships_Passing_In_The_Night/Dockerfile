@@ -1,6 +1,9 @@
-# Étape 1 : Construction (Builder)
+# étape 1 : Construction (Builder)
 # utilise une image Node.js légère (alpine)
-FROM node:20 AS builder
+FROM node:20-alpine AS builder
+
+# fix la librairei manquante pour les builds sur Alpine (notamment pour les dépendances natives)
+RUN apk add --no-cache libc6-compat build-base advancecomp
 
 # définit le dossier de travail dans le conteneur
 WORKDIR /app
