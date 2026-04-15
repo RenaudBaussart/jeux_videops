@@ -1,6 +1,6 @@
 # Étape 1 : Construction (Builder)
 # utilise une image Node.js légère (alpine)
-FROM node:20-alpine AS builder
+FROM node:20 AS builder
 
 # définit le dossier de travail dans le conteneur
 WORKDIR /app
