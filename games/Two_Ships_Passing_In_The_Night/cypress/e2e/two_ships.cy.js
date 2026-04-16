@@ -12,7 +12,7 @@ describe('Two Ships Passing In The Night - E2E Tests', () => {
 
   beforeEach(() => {
     // Visiter la page du jeu avant chaque test
-    cy.visit('http://localhost:5500/games/Two_Ships_Passing_In_The_Night/index.html'); 
+    cy.visit('http://localhost:5000');
   });
 
   it('should successfully render the game canvas', () => {
