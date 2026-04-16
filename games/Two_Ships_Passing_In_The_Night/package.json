@@ -8,7 +8,9 @@
     "build": "vite build",
     "serve": "vite preview",
     "unit-test": "vitest run ./src/tests/two_ship.test.js --reporter=default --reporter=github-actions",
-    "lint": "eslint src/**/*.js"
+    "lint": "eslint src/**/*.js",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "repository": {
     "type": "git",
@@ -21,7 +23,7 @@
   },
   "homepage": "https://github.com/razh/js13k-2021#readme",
   "devDependencies": {
-    "@playwright/test": "^1.59.1",
+    "cypress": "^15.13.1",
     "del": "6.0.0",
     "escape-string-regexp": "5.0.0",
     "eslint": "7.32.0",

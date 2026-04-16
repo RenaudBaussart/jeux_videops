@@ -1,4 +1,4 @@
-name: "CI - Two-ships"
+name: "CI/CD - Two-ships"
 
 on:
   push:
@@ -86,26 +86,20 @@ jobs:
   functional-test:
     needs: build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: games/Two_Ships_Passing_In_The_Night
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: cypress-io/github-action@v6
         with:
-          node-version: 20
-          cache: 'npm'
-          cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build game
-        # re-build pour sassurer que le dossier /dist existe pour le serveur
-        run: npm run build
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
-
-      - name: Run Functional Tests
-        run: npx playwright test ./src/tests/test_func.test.js --reporter=github
+          working-directory: games/Two_Ships_Passing_In_The_Night
+          build: npm run build
+          start: npm run serve
+          install-command: npm install
+  #deploy:
+  #  needs: functional-test
+  # runs-on: ubuntu-latest
+  # defaults:
+  #   run:
+  #     working-directory: .
+  # steps:
+  #   - name: Trigger Render Deployment
+  #     run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
