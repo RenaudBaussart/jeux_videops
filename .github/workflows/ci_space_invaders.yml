@@ -26,8 +26,8 @@ jobs:
     # etape d automatisation
     steps:
       - name: "Checkout Code"
-      # recupere le code depuis github pour le mettre en local
-      #- name: Checkout Code
+        # recupere le code depuis github pour le mettre en local
+        #- name: Checkout Code
         uses: actions/checkout@v4
 
       - name: "Install Node.js v18"
@@ -107,9 +107,9 @@ jobs:
     needs: install
     steps:
       - name: "Checkout Code"
-      # recupere le code depuis github pour le mettre en local
+        # recupere le code depuis github pour le mettre en local
         uses: actions/checkout@v4
-        
+
       - name: "Install Node.js v18"
         uses: actions/setup-node@v4
         with:
@@ -125,6 +125,7 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
 
   # COMPILATION
+  # BUILD
   # si tous les tests sont passées alors il build
   build:
     name: "Compilation & Status"
@@ -151,7 +152,6 @@ jobs:
         run: npm run build
         working-directory: ${{ env.WORKING_DIR }}
 
-
         # BONUS
         # Création d'artefact lors de rapport d'erreur
       - name: "Upload Game Artifact"
@@ -171,3 +171,41 @@ jobs:
       - name: Success Annotation
         if: success()
         run: echo "::notice::Build, lint or tests successful for Space Invaders"
+
+  # DEPLOIEMENT / DOCKERISATION
+  deploy:
+    name: "Docker Conteneurisation"
+    # precise a github que cest une version ubuntu
+    runs-on: ubuntu-latest
+    # nécessite le build
+    needs: build
+    steps:
+      # recupere le code depuis github pour le mettre en local
+      - name: "Checkout Code"
+        uses: actions/checkout@v4
+
+      # IMPORTANT SECURITE CREDENTIALS
+      # connexion sécurisée
+      - name: "Login to Docker Hub"
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+
+      # récupere les fichiers compilés sauvegardés
+      - name: "Download Artifact"
+        uses: actions/download-artifact@v4
+        with:
+          name: space-invaders-build
+          path: games/Space_Invaders/build
+
+      # Build de l'image docker
+      - name: "Build Docker Image"
+        run: |
+          docker build -t space-invaders:latest .
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: "Success Notification"
+        if: success()
+        run: echo "::notice::Image Docker créée pour Space Invaders"
