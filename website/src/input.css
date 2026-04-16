@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* css uniquement pour le fond (effet étoile filante */
+@layer utilities {
+
+    /* fond principal des étoiles */
+    .stars {
+        position: fixed;
+        /* top r b l à 0 */
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    /* effet pleins d'étoiles qui défile */
+    .stars::before,
+    .stars::after {
+        position: absolute;
+        content: "";
+        /* zone plus grande que l'écran pour un joli rendu */
+        width: 300%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+
+    /* premier layer d'étoile proche (premier plan)*/
+    .stars::after {
+        /* radial-gradient : dessine les étoiles */
+        /* px : position aléatoire */
+        background-image:
+            radial-gradient(2.5px 2.5px at 50px 80px, rgba(255, 255, 255, 1), transparent),
+            radial-gradient(2px 2px at 160px 250px, rgba(220, 240, 255, 0.8), transparent),
+            radial-gradient(3px 3px at 280px 140px, rgba(255, 255, 255, 0.9), transparent),
+            radial-gradient(1.5px 1.5px at 350px 300px, rgba(220, 240, 255, 0.5), transparent);
+
+        /* répétition du motif */
+        background-size: 400px 400px;
+
+        /* ralentie sur l'animation */
+        animation: driftFast 12s linear infinite;
+    }
+
+    /* second layer d'étoile au loin (fond) */
+    .stars::before {
+        /* radial-gradient : dessine les étoiles */
+        /* px : position aléatoire */
+        background-image:
+            radial-gradient(1.5px 1.5px at 20px 30px, rgba(200, 220, 255, 0.7), transparent),
+            radial-gradient(1px 1px at 80px 120px, rgba(200, 220, 255, 0.4), transparent),
+            radial-gradient(2px 2px at 140px 50px, rgba(220, 240, 255, 0.9), transparent),
+            radial-gradient(1px 1px at 220px 210px, rgba(200, 220, 255, 0.5), transparent),
+            radial-gradient(1.5px 1.5px at 280px 90px, rgba(220, 240, 255, 0.6), transparent);
+
+        /* répétition du motif */
+        background-size: 300px 300px;
+
+        /* ralentie sur l'animation */
+        animation: driftSlow 25s linear infinite;
+    }
+
+    /* animation de mouvement */
+
+    /* si modifié, il faut modifier aussi la largeur du bg size */
+    @keyframes driftSlow {
+        from {
+            transform: translateX(0);
+        }
+
+        to {
+            transform: translateX(-300px);
+        }
+
+    }
+
+
+    @keyframes driftFast {
+        from {
+            transform: translateX(0);
+        }
+
+        to {
+            transform: translateX(-400px);
+        }
+
+    }
+}
