@@ -83,17 +83,17 @@ jobs:
       - run: npm install
       - run: npm run build
 
-  functional-test:
+functional-test:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run Cypress Tests
-        uses: cypress-io/github-action@v6
+      - uses: cypress-io/github-action@v6
         with:
           working-directory: games/Two_Ships_Passing_In_The_Night
           build: npm run build
           start: npm run serve
+          install-command: npm install
   #deploy:
   #  needs: functional-test
   # runs-on: ubuntu-latest
