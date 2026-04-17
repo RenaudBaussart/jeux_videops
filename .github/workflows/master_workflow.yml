@@ -54,7 +54,7 @@ jobs:
           cd website
           npm install
           npm run build
-          
+
       # assemblage du hub
 
       - name: Assemblage du Hub Global
@@ -62,6 +62,7 @@ jobs:
           mkdir ./hub-global
           cp ./website/index.html ./hub-global/
           cp -r ./website/dist ./hub-global/dist
+          cp -r ./website/assets ./hub-global/assets
           cp -r ./dist-two-ships ./hub-global/two-ships
           cp -r ./dist-space-invaders ./hub-global/space-invaders
       
