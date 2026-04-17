@@ -1,14 +1,6 @@
 name: "CI - Two-ships"
 
 on:
-  push:
-    branches: ["**"]
-    # paths: 
-    #  - "games/Two_Ships_Passing_In_The_Night/**"
-  pull_request:
-    branches: ["**"]
-    # paths: 
-    #  - "games/Two_Ships_Passing_In_The_Night/**"
   workflow_dispatch:
   workflow_call:
 

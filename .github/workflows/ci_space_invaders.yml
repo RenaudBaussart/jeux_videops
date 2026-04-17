@@ -4,12 +4,8 @@ name: "CI - Space Invaders"
 # trigger : a quel moment lusine se met en marche
 # on push : quand il recoit un nouveau push sur github
 on:
-  push:
-    branches: ["**"]
-  pull_request:
-    branches: ["**"]
-  # permet de lancer lusine sans push
   workflow_dispatch:
+  workflow_call:
 
   # définit des variables communes
 env:
