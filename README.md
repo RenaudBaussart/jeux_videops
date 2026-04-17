@@ -41,6 +41,7 @@ docker run -d -p 8080:80 ghcr.io/renaudbaussart/hub-jeux:latest
 Le hub sera directement accessible depuis votre navigateur sur `http://localhost:8080`.
 
 ## Livrables Inclus
+* une page déployée avec [github pages](https://renaudbaussart.github.io/jeux_videops/)
 * Code source des jeux et de l'interface d'accueil.
 * Workflows d'automatisation GitHub Actions.
 * `Dockerfile` global.
