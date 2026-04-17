@@ -73,12 +73,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Formater le nom d'utilisateur en minuscules
+        run: echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: . 
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/hub-jeux:latest
+          tags: ghcr.io/${{ env.REPO_OWNER }}/hub-jeux:latest
 
       # deploiement sur github pages
       - name: Preparer GitHub Pages
