@@ -1,0 +1,25 @@
+# chef dorchestre
+
+# Space invaders:
+# http://localhost:8081
+
+# Two ship :
+# http://localhost:8082
+
+# Composant Space invaders
+services:
+  space-invaders:
+    build:
+      context: ./games/Space_Invaders
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"
+
+
+# Composant Two Ship
+  two-ships :
+    build:
+      context: ./games/Two_Ships
+      dockerfile: Dockerfile
+    ports:
+      - "8082:80"

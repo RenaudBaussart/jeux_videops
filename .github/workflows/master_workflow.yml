@@ -1,0 +1,97 @@
+name: Master Workflow
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+  workflow_dispatch:
+
+# permissions globales necessaires pour ghcr et pages
+permissions:
+  contents: read
+  packages: write
+  pages: write
+  id-token: write
+
+jobs:
+  # lance le test du premier jeu
+  test-jeu-1:
+    uses: ./.github/workflows/ci_two_ship.yml
+    
+  # lance le test du deuxieme jeu en parallele
+  test-jeu-2:
+    uses: ./.github/workflows/ci_space_invaders.yml
+
+  # deploie uniquement si les deux au-dessus sont verts
+  deploy:
+    needs: [test-jeu-1, test-jeu-2]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # telecharge l artefact du jeu 1
+      - name: Download Two Ships Build
+        uses: actions/download-artifact@v4
+        with:
+          name: two-ships-dist
+          path: ./dist-two-ships
+
+      # telecharge l artefact du jeu 2
+      - name: Download Space Invaders Build
+        uses: actions/download-artifact@v4
+        with:
+          name: space-invaders-build
+          path: ./dist-space-invaders
+
+      # compilation du hub (website)
+
+      - name: Compiler le Hub (Website)
+        run: |
+          cd website
+          npm install
+          npm run build
+
+      # assemblage du hub
+
+      - name: Assemblage du Hub Global
+        run: |
+          mkdir ./hub-global
+          cp ./website/index.html ./hub-global/
+          cp -r ./website/dist ./hub-global/dist
+          cp -r ./website/assets ./hub-global/assets
+          cp -r ./dist-two-ships ./hub-global/two-ships
+          cp -r ./dist-space-invaders ./hub-global/space-invaders
+      
+      # construction de l image docker du hub et push sur GHCR
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Formater le nom d'utilisateur en minuscules
+        run: echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: . 
+          push: true
+          tags: ghcr.io/${{ env.REPO_OWNER }}/hub-jeux:latest
+
+      # deploiement sur github pages
+      - name: Preparer GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # donne a github notre beau dossier tout assemble !
+          path: ./hub-global
+
+      - name: Deploiement final sur Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

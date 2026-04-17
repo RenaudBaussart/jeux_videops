@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pas-ciel-d'hommes - site de jeux en ligne</title>
+    <meta name="description" content="Découvrez Pas-ciel-d'hommes, une plateforme de jeux gratuit et en ligne!">
+    <link rel="stylesheet" href="./dist/output.css">
+</head>
+
+
+<body
+    class="flex flex-col bg-gradient-to-br from-gray-950 via-purple-900 to-indigo-950 text-white font-sans min-h-screen">
+    <div class="stars"></div>
+
+    <header class="relative text-center py-16 z-10">
+        <!-- tracking-tight : aggrandit lespace entre les lettres -->
+        <!-- bg-clip-text: permet de mettre une image en fond plutot quune couleur -->
+        <h1
+            class="text-5xl md:text-7xl font-black tracking-[0.15em] text-transparent mb-4 uppercase bg-clip-text bg-gradient-to-b from-white to-purple-400 drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]">
+            Pas-ciel-d'hommes
+        </h1>
+
+        <p class="text-lg text-purple-200 font-semibold drop-shadow-md tracking-[0.3em] mt-2 md:text-xl">
+            Jeux en ligne & gratuit
+        </p>
+    </header>
+
+    <main class="flex flex-grow items-center justify-center relative z-10 container mx-auto px-6 max-w-5xl">
+        <div class="grid grid-cols-1 gap-12 md:grid-cols-2 w-full">
+
+            <!-- PREMIER BLOC JEU 1 -->
+            <div class="flex flex-col items-center">
+                <h2 class="text-2xl text-white font-bold mb-6 drop-shadow-md">
+                    Space Invaders
+                </h2>
+                <!-- au passage de souris un gif se joue -->
+                <!-- aspect-square: force un ratio 1:1 soit toujours un carré -->
+                <a class="flex items-center justify-center group w-full relative overflow-hidden aspect-square bg-[url('../assets/img/space_invaders_screen.png')] bg-cover bg-center hover:bg-[url('../assets/gif/space_invaders.gif')] transition-all duration-500 hover:border-purple-500 hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] rounded-2xl shadow-2xl border-4 border-indigo-950"
+                    href="./space-invaders/" aria-label="Jouer au jeu Space Invaders">
+                    <div
+                        class="bg-opacity-50 bg-black absolute transition-all inset-0 duration-500 group-hover:bg-opacity-20">
+                    </div>
+
+                    <!-- faux bouton jouer -->
+                    <div
+                        class="flex flex-col items-center justify-center relative z-10 duration-500 transition-all group-hover:-translate-y-4 ">
+
+                        <span
+                            class="text-5xl font-black tracking-widest text-white mb-4 group-hover:scale-110 transition-transform transition-all duration-500 drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]"
+                            aria-hidden="true">
+                            JOUER
+                        </span>
+                        <p
+                            class="mt-4 px-2 font-semibold text-purple-200 text-center w-[250px] drop-shadow-md opacity-0 pointer-events-none">
+                            Survivez le plus longtemps possible dans ce shooter géométrique!
+                        </p>
+                    </div>
+
+                </a>
+            </div>
+
+
+            <!-- SECOND BLOC JEU 2 -->
+            <div class="flex flex-col items-center">
+                <h2 class="text-2xl text-white font-bold mb-6 drop-shadow-md">
+                    Two Ships Passing In The Night
+                </h2>
+                <!-- au passage de souris un gif se joue -->
+                <!-- aspect-square: force un ratio 1:1 soit toujours un carré -->
+                <a class="flex items-center justify-center group w-full relative overflow-hidden aspect-square bg-[url('../assets/img/two_ships_screen.png')] bg-cover bg-center hover:bg-[url('../assets/gif/two_ships.gif')] transition-all duration-500 hover:border-purple-400 hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] rounded-2xl shadow-2xl border-4 border-indigo-950"
+                    href="./two-ships/" aria-label="Jouer au jeu Two Ships Passing In The Night">
+                    <div
+                        class="bg-opacity-50 bg-black absolute transition-all inset-0 duration-500 group-hover:bg-opacity-20">
+                    </div>
+
+                    <!-- faux bouton jouer -->
+                    <div class="flex flex-col items-center justify-center relative z-10 duration-500 transition-all
+                    group-hover:-translate-y-4 ">
+                        <span
+                            class="text-5xl font-black tracking-widest text-white mb-4 group-hover:scale-110 transition-transform transition-all duration-500 drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]"
+                            aria-hidden="true">
+                            JOUER
+                        </span>
+                        <p
+                            class="mt-4 px-2 font-semibold text-purple-200 text-center w-[250px] drop-shadow-md opacity-0 pointer-events-none">
+                            Evitez de vous faire toucher et défendez-vous contre les aliens!
+                        </p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+    <footer
+        class="relative z-10 text-center text-sm text-purple-200/80 mt-12 py-8 bg-black/40 border-t border-purple-900/50 shadow-inner">
+        <p class="mb-4">
+            Projet Jeux Vidéops développé par
+            <!-- WARNING portfolio renaud a mettre -->
+            <a href="https://github.com/RenaudBaussart"
+                class="text-white font-bold hover:text-purple-300 hover:underline transition-colors drop-shadow-sm"
+                target="_blank" rel="noopener noreferrer">
+                Renaud Baussart
+            </a>
+            &
+            <a href="https://meegy-exe.github.io/Portfolio/"
+                class="text-white font-bold hover:text-purple-300 hover:underline transition-colors drop-shadow-sm"
+                rel="noopener noreferrer" target="_blank">
+                Alison Dehaies
+            </a>
+        </p>
+        <!-- CREDITS -->
+        <!-- noopener: empeche la page ouverte d'acceder a la page via js  -->
+        <!-- noreferrer: empeche denvoyer linfo de provenance -->
+        <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+            <span class="text-purple-300">Jeux originaux (js13k 2021) :</span>
+
+            <a class="hover:text-white transition-colors" rel="noopener noreferrer"
+                aria-label="Visiter le github de l'auteur du jeu" target="_blank"
+                href="https://github.com/KonradLinkowski/SpaceInvaders/tree/e664e935fa518d7edea6a0db6d779da46edd0a90?tab=readme-ov-file">
+                Space Invaders par Konrad Linkowski & Sandra Kbt
+            </a>
+
+            <span class="hidden text-purple-600 md:inline">-</span>
+
+            <a class="hover:text-white transition-colors" rel="noopener noreferrer"
+                aria-label="Visiter le github de l'auteur du jeu" target="_blank"
+                href="https://github.com/razh/js13k-2021/tree/fd4b9e6e1954b8850125c0a7a0219db0607bf37e">
+                Two Ships Passing In The Night par Razh
+            </a>
+        </div>
+    </footer>
+</body>
+
+</html>
