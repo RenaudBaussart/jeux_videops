@@ -1,15 +1,8 @@
-name: "CI/CD - Two-ships"
+name: "CI - Two-ships"
 
 on:
-  push:
-    branches: ["**"]
-    # paths: 
-    #  - "games/Two_Ships_Passing_In_The_Night/**"
-  pull_request:
-    branches: ["**"]
-    # paths: 
-    #  - "games/Two_Ships_Passing_In_The_Night/**"
   workflow_dispatch:
+  workflow_call:
 
 defaults:
   run:
@@ -82,6 +75,11 @@ jobs:
           cache-dependency-path: games/Two_Ships_Passing_In_The_Night/package-lock.json
       - run: npm install
       - run: npm run build
+      - name: Sauvegarder le build (Artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: two-ships-dist
+          path: games/Two_Ships_Passing_In_The_Night/dist/
 
   functional-test:
     needs: build
@@ -94,12 +92,3 @@ jobs:
           build: npm run build
           start: npm run serve
           install-command: npm install
-  #deploy:
-  #  needs: functional-test
-  # runs-on: ubuntu-latest
-  # defaults:
-  #   run:
-  #     working-directory: .
-  # steps:
-  #   - name: Trigger Render Deployment
-  #     run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
