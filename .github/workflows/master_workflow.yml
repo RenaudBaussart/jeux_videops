@@ -49,11 +49,13 @@ jobs:
 
       # compilation du hub (website)
 
-      - name: Compiler le Hub (Website)
+      - name: Assemblage du Hub Global
         run: |
-          cd website
-          npm install
-          npm run build
+          mkdir ./hub-global
+          cp ./website/index.html ./hub-global/
+          cp -r ./website/dist ./hub-global/dist
+          cp -r ./dist-two-ships ./hub-global/two-ships
+          cp -r ./dist-space-invaders ./hub-global/space-invaders
 
       # assemblage du hub
 
