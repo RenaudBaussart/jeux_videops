@@ -44,11 +44,19 @@
                     </div>
 
                     <!-- faux bouton jouer -->
-                    <span
-                        class="text-5xl font-black tracking-widest relative group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]"
-                        aria-hidden="true">
-                        JOUER
-                    </span>
+                    <div
+                        class="flex flex-col items-center justify-center relative z-10 duration-500 transition-all group-hover:-translate-y-4 ">
+
+                        <span
+                            class="text-5xl font-black tracking-widest text-white mb-4 group-hover:scale-110 transition-transform transition-all duration-500 drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]"
+                            aria-hidden="true">
+                            JOUER
+                        </span>
+                        <p
+                            class="mt-4 px-2 font-semibold text-purple-200 text-center w-[250px] drop-shadow-md opacity-0 pointer-events-none">
+                            Survivez le plus longtemps possible dans ce shooter géométrique!
+                        </p>
+                    </div>
 
                 </a>
             </div>
@@ -62,19 +70,24 @@
                 <!-- au passage de souris un gif se joue -->
                 <!-- aspect-square: force un ratio 1:1 soit toujours un carré -->
                 <a class="flex items-center justify-center group w-full relative overflow-hidden aspect-square bg-[url('../assets/img/two_ships_screen.png')] bg-cover bg-center hover:bg-[url('../assets/gif/two_ships.gif')] transition-all duration-500 hover:border-purple-400 hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] rounded-2xl shadow-2xl border-4 border-indigo-950"
-                    href="./two-ships/"
-                    aria-label="Jouer au jeu Two Ships Passing In The Night">
+                    href="./two-ships/" aria-label="Jouer au jeu Two Ships Passing In The Night">
                     <div
                         class="bg-opacity-50 bg-black absolute transition-all inset-0 duration-500 group-hover:bg-opacity-20">
                     </div>
 
                     <!-- faux bouton jouer -->
-                    <span
-                        class="text-5xl font-black tracking-widest relative group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]"
-                        aria-hidden="true">
-                        JOUER
-                    </span>
-
+                    <div class="flex flex-col items-center justify-center relative z-10 duration-500 transition-all
+                    group-hover:-translate-y-4 ">
+                        <span
+                            class="text-5xl font-black tracking-widest text-white mb-4 group-hover:scale-110 transition-transform transition-all duration-500 drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]"
+                            aria-hidden="true">
+                            JOUER
+                        </span>
+                        <p
+                            class="mt-4 px-2 font-semibold text-purple-200 text-center w-[250px] drop-shadow-md opacity-0 pointer-events-none">
+                            Evitez de vous faire toucher et défendez-vous contre les aliens!
+                        </p>
+                    </div>
                 </a>
             </div>
         </div>
